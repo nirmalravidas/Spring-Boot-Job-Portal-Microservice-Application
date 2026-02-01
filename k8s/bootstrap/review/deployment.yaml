@@ -7,9 +7,11 @@ metadata:
     app: review
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: review
   template:
     metadata:
-      name: review
       labels:
         app: review
     spec:
@@ -22,7 +24,13 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s
+            - name: BP_JVM_MEMORY
+              value: 256m
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
       restartPolicy: Always
-  selector:
-    matchLabels:
-      app: review

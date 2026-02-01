@@ -7,9 +7,11 @@ metadata:
     app: company
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: company
   template:
     metadata:
-      name: company
       labels:
         app: company
     spec:
@@ -22,7 +24,14 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: k8s
+            # Reduce JVM memory for low-memory environments
+            - name: BP_JVM_MEMORY
+              value: 256m
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
       restartPolicy: Always
-  selector:
-    matchLabels:
-      app: company
